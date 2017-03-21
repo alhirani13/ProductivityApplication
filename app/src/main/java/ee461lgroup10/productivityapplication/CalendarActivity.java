@@ -2,6 +2,8 @@ package ee461lgroup10.productivityapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,7 +13,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         ListView mCalendarDayTasks;
 
-        //TODO: remove/refactor this, this is to make sure layout works
+        //TODO: remove/refactor this, this is to make sure layout works (need to replace with SQL data)
         String[] useless = new String[] {
                 "No tasks yet",
                 "Enter a task with date to display here",
@@ -28,5 +30,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         mCalendarDayTasks = (ListView)findViewById(R.id.calendarTaskList);
         mCalendarDayTasks.setAdapter(adapter);
+
+        //TODO: Set so that whenever someone clicks thing in list it goes to taskList??
+        mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        })
     }
 }
