@@ -1,5 +1,6 @@
 package ee461lgroup10.productivityapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,12 +32,12 @@ public class CalendarActivity extends AppCompatActivity {
         mCalendarDayTasks = (ListView)findViewById(R.id.calendarTaskList);
         mCalendarDayTasks.setAdapter(adapter);
 
-        //TODO: Set so that whenever someone clicks thing in list it goes to taskList??
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(CalendarActivity.this, TaskListActivity.class);
+                startActivity(intent);
             }
-        })
+        });
     }
 }

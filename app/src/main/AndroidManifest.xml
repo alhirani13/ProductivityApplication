@@ -16,6 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TaskListActivity"
+            android:label="@string/title_activity_task_list"
+            android:parentActivityName=".CalendarActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ee461lgroup10.productivityapplication.CalendarActivity"/>
+        </activity>
     </application>
 
 </manifest>
