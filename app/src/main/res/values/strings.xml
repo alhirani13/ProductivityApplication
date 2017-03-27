@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Get \'Er Done</string>
+    <string name="title_activity_task_list">Tasks</string>
+</resources>
