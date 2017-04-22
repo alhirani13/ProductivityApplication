@@ -34,7 +34,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE" + TABLE_TASKS + "(" + KEY_ID + "INTEGER PRIMARY KEY" + KEY_NAME + "TEXT," + KEY_DATE + "TEXT" + ")";
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_DATE + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -51,13 +51,13 @@ public class DBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, task.getName()); //Task Name
-        values.put(KEY_DATE, task.getDate().toString()); //Task Date
+        values.put(KEY_DATE, task.getDate()); //Task Date
         db.insert(TABLE_TASKS, null, values);
         db.close(); //Closing Database Connection
     }
 
     //Getting one Task, Read Record
-    public Task getTask(int id) throws ParseException {
+    public Task getTask(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
         if(cursor != null)
@@ -68,7 +68,7 @@ public class DBHandler extends SQLiteOpenHelper{
     }
 
     //Getting all tasks
-    public List<Task> getAllTasks() throws ParseException {
+    public List<Task> getAllTasks() {
         List<Task> taskList = new ArrayList<Task>();
         //Select all query
         String selectQuery = "SELECT * FROM " + TABLE_TASKS;
@@ -104,7 +104,7 @@ public class DBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, task.getName());
-        values.put(KEY_DATE, task.getDate().toString());
+        values.put(KEY_DATE, task.getDate());
         //updating row
         return db.update(TABLE_TASKS, values, KEY_ID + " = ?", new String[]{String.valueOf(task.getId())});
     }

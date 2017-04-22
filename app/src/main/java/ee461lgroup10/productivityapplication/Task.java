@@ -4,22 +4,19 @@ package ee461lgroup10.productivityapplication;
  * Created by dylan_000 on 3/29/2017.
  */
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Task {
     private int id;
     private String name;
-    private Date date;
+    private String date;
 
     public Task(){}
 
-    public Task(int id, String name, String date) throws ParseException {
+    public Task(int id, String name, String date) {
         this.id = id;
         this.name = name;
-        DateFormat fmt = new SimpleDateFormat("MM/dd/yy");
-        this.date = fmt.parse(date);
+        this.date = date;
     }
 
     public void setId(int id){
@@ -30,9 +27,8 @@ public class Task {
         this.name = name;
     }
 
-    public void setDate(String date) throws ParseException {
-        DateFormat fmt = new SimpleDateFormat("MM/dd/yy");
-        this.date = fmt.parse(date);
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getId(){
@@ -43,7 +39,7 @@ public class Task {
         return name;
     }
 
-    public Date getDate(){
+    public String getDate(){
         return date;
     }
 }
