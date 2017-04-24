@@ -16,6 +16,18 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     private String s;
 
+    public interface OnDataPass {
+        public void onDataPass(String data);
+    }
+
+    OnDataPass dataPasser;
+
+
+    public void onAttach(TaskListActivity a) {
+        super.onAttach(a);
+        dataPasser = a;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -31,7 +43,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         s =  month + "/" + day + "/" + year;
-
+        dataPasser.onDataPass(s);
         // Do something with the date chosen by the user
     }
 }
