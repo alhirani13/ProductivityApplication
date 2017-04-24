@@ -22,6 +22,7 @@
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 
 </resources>
