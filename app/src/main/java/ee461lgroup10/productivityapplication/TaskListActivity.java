@@ -19,15 +19,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.List;
 
-public class TaskListActivity extends AppCompatActivity {
+public class TaskListActivity extends AppCompatActivity implements DatePickerFragment.OnDataPass {
 
     private ListView mTasks;
     private Button mNameTaskButton;
-    private String m_Text = "";
-    private String m_Date = "";
-    private DBHandler db;
+    public String m_Text = "";
+    public String m_Date = "";
     private DialogFragment newFragment;
     private int id = 1;
 
@@ -46,15 +46,12 @@ public class TaskListActivity extends AppCompatActivity {
         mNameTaskButton = (Button) findViewById(R.id.TaskName);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        db = new DBHandler(this);
+
 
 
     }
 
-    public void makeEntry() {
-        db.addTask(new Task(id, m_Text, "04/25/2017"));
-        id++;
-    }
+
 
     public void showDatePickerDialog(View v) {
         newFragment = new DatePickerFragment();
@@ -76,7 +73,6 @@ public class TaskListActivity extends AppCompatActivity {
                 //What ever you want to do with the value
                 Editable YouEditTextValue = edittext.getText();
                 m_Text = YouEditTextValue.toString();
-                makeEntry();
             }
         });
 
@@ -89,6 +85,16 @@ public class TaskListActivity extends AppCompatActivity {
         alert.show();
     }
 
+    @Override
+    public void onDataPass(String data) {
+        m_Date = data;
+    }
 
+    public void makeEntry() {
+        Intent backToCalendar = new Intent(TaskListActivity.this, CalendarActivity.class);
+        backToCalendar.putExtra("Task Name", m_Text);
+        backToCalendar.putExtra("Task Date", m_Date);
+        startActivity(backToCalendar);
+    }
 
 }

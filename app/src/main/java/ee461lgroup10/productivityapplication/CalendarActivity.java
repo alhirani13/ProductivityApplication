@@ -19,6 +19,8 @@ import java.util.List;
 public class CalendarActivity extends AppCompatActivity {
     ListView mCalendarDayTasks;
 
+    private DBHandler db;
+
     //TODO: remove/refactor this, this is to make sure layout works (need to replace with SQL data)
 
     @Override
@@ -38,5 +40,13 @@ public class CalendarActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        db = new DBHandler(this);
+    }
+
+    public void makeEntry() {
+        db.addTask(new Task(id, m_Text, m_Date));
     }
 }
+
+String taskName = getIntent().getStringExtra("Task Name");
