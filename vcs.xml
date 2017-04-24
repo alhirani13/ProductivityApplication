@@ -6,6 +6,10 @@
           <option name="url" value="https://github.com/alhirani13/ProductivityApplication.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://github.com" />
+          <option name="userName" value="alhirani13" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="C:\Users\AL Hirani\Desktop\461L - Software Design Lab" />
