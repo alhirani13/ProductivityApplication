@@ -38,20 +38,5 @@ public class CalendarActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        DBHandler db = new DBHandler(this);
-
-        db.addTask(new Task(1, "homework", "04/25/2017"));
-        Log.d("Reading: ", "Reading all tasks..");
-        List<Task> tasks = db.getAllTasks();
-
-        for (Task task : tasks) {
-            String log = "Id: " + task.getId() + " ,Name: " + task.getName() + " ,Date: " + task.getDate();
-            // Writing shops to log
-            Log.d("Task: : ", log);
-        }
-
     }
-
-
 }
