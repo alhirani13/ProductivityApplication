@@ -11,9 +11,9 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 
 public class CalendarActivity extends AppCompatActivity {
+    CalendarView mCalendarView;
     ListView mCalendarDayTasks;
 
-    //TODO: remove/refactor this, this is to make sure layout works (need to replace with SQL data)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,20 @@ public class CalendarActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
         mCalendarDayTasks = (ListView)findViewById(R.id.calendarTaskList);
         mCalendarDayTasks.setAdapter(adapter);
+        mCalendarView = (CalendarView)findViewById((R.id.calendarView));
 
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CalendarActivity.this, TaskListActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
             }
         });
 
