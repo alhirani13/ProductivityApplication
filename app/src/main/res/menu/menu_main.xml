@@ -4,6 +4,10 @@
 
     <item
         android:id="@+id/addTask"
-        android:title="Add Task"
+        android:title="@string/add_task"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/goToMap"
+        android:title="@string/go_to_map"
+        app:showAsAction="ifRoom"/>
 </menu>

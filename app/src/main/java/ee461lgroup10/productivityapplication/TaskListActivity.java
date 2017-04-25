@@ -1,5 +1,7 @@
 package ee461lgroup10.productivityapplication;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,8 +39,13 @@ public class TaskListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.addTask) {
+        if (id == R.id.addTask) {
             return true;
+        }
+        if (id == R.id.goToMap)
+        {
+            Intent webIntent = new Intent(TaskListActivity.this, WebActivity.class);
+            startActivity(webIntent);
         }
         return super.onOptionsItemSelected(item);
     }
