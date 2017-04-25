@@ -17,19 +17,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class TaskListActivity extends AppCompatActivity implements DatePickerFragment.OnDataPass {
+public class TaskListActivity extends AppCompatActivity {
 
     private ListView mTasks;
     private Button mNameTaskButton;
     public String m_Text = "";
     public String m_Date = "";
     private DialogFragment newFragment;
+    private DBHandler db;
     private int id = 1;
+    private TextView mTaskNameText;
+    private TextView mSetDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +48,22 @@ public class TaskListActivity extends AppCompatActivity implements DatePickerFra
         mTasks.setAdapter(adapter);*/
 
         mNameTaskButton = (Button) findViewById(R.id.TaskName);
+        mTaskNameText = (TextView) findViewById(R.id.NameTaskText);
+        mSetDateText = (TextView) findViewById(R.id.SetDateText);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        db = new DBHandler(this);
 
+        Button confirm =(Button)findViewById(R.id.ConfirmButton);
+        confirm.setOnClickListener(new View.OnClickListener() {
 
+            public void onClick(View v) {
+                makeEntry();
+                Intent intent = new Intent(TaskListActivity.this, CalendarActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -59,6 +74,12 @@ public class TaskListActivity extends AppCompatActivity implements DatePickerFra
 
     }
 
+
+
+    public void makeEntry() {
+        db.addTask(new Task(id, m_Text, m_Date));
+        id++;
+    }
 
     public void showAlertDialog(View v) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -73,6 +94,7 @@ public class TaskListActivity extends AppCompatActivity implements DatePickerFra
                 //What ever you want to do with the value
                 Editable YouEditTextValue = edittext.getText();
                 m_Text = YouEditTextValue.toString();
+                mTaskNameText.setText(m_Text);
             }
         });
 
@@ -85,16 +107,12 @@ public class TaskListActivity extends AppCompatActivity implements DatePickerFra
         alert.show();
     }
 
-    @Override
-    public void onDataPass(String data) {
+
+    public void setM_Date(String data) {
         m_Date = data;
+        mSetDateText.setText(m_Date);
     }
 
-    public void makeEntry() {
-        Intent backToCalendar = new Intent(TaskListActivity.this, CalendarActivity.class);
-        backToCalendar.putExtra("Task Name", m_Text);
-        backToCalendar.putExtra("Task Date", m_Date);
-        startActivity(backToCalendar);
-    }
+
 
 }
