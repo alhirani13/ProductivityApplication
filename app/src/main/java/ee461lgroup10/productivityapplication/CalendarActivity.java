@@ -14,6 +14,8 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -27,8 +29,15 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        db = new DBHandler(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
+        String[] names = new String[db.getAllTasks().size()];
+        for(int i = 0; i < db.getAllTasks().size(); i++)
+        {
+            names[i] = db.getAllTasks().get(i).getName();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
         mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
 
         mCalendarDayTasks.setAdapter(adapter);
@@ -41,12 +50,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-        db = new DBHandler(this);
     }
 
-    public void makeEntry() {
-        db.addTask(new Task(id, m_Text, m_Date));
-    }
+
 }
-
-String taskName = getIntent().getStringExtra("Task Name");
