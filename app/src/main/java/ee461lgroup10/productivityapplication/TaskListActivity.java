@@ -40,7 +40,9 @@ public class TaskListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.addTask) {
-            return true;
+            Intent createTaskIntent = new Intent(TaskListActivity.this, CreateTaskActivity.class);
+            startActivity(createTaskIntent);
+
         }
         if (id == R.id.goToMap)
         {

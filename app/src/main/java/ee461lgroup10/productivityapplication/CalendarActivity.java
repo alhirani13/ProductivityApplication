@@ -16,18 +16,34 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.util.Log;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
     CalendarView mCalendarView;
     ListView mCalendarDayTasks;
-
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        db = new DBHandler(this);
+
+        String[] names = new String[db.getAllTasks().size()];
+        for(int i = 0; i < db.getAllTasks().size(); i++)
+        {
+            names[i] = db.getAllTasks().get(i).getName();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
+        mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
+        setSupportActionBar(toolbar);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
@@ -46,13 +62,14 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+
+        /*
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
             }
-        });
-
+        });*/
     }
 
     @Override
@@ -65,10 +82,10 @@ public class CalendarActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.addTask) {
-            //TODO Change this to go to create task activity
-            return true;
+            Intent createTaskIntent = new Intent(CalendarActivity.this, CreateTaskActivity.class);
+            startActivity(createTaskIntent);
         }
-        if(id == R.id.goToMap)
+        else if(id == R.id.goToMap)
         {
             Intent webIntent = new Intent(CalendarActivity.this, WebActivity.class);
             startActivity(webIntent);
