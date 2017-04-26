@@ -43,17 +43,6 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
 
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
-        setSupportActionBar(toolbar);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
-
-        mCalendarDayTasks.setAdapter(adapter);
-        mCalendarView = (CalendarView)findViewById((R.id.calendarView));
-
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
