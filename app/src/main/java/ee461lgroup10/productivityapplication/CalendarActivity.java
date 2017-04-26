@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +23,8 @@ import java.util.List;
 public class CalendarActivity extends AppCompatActivity {
     CalendarView mCalendarView;
     ListView mCalendarDayTasks;
-
     private DBHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,13 @@ public class CalendarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
+        setSupportActionBar(toolbar);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
+        mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
+
         mCalendarDayTasks.setAdapter(adapter);
         mCalendarView = (CalendarView)findViewById((R.id.calendarView));
 
@@ -56,6 +62,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+
         /*
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -63,7 +70,6 @@ public class CalendarActivity extends AppCompatActivity {
 
             }
         });*/
-
     }
 
     @Override

@@ -42,6 +42,7 @@ public class TaskListActivity extends AppCompatActivity {
         if (id == R.id.addTask) {
             Intent createTaskIntent = new Intent(TaskListActivity.this, CreateTaskActivity.class);
             startActivity(createTaskIntent);
+
         }
         if (id == R.id.goToMap)
         {
