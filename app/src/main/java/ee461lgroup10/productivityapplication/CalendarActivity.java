@@ -39,6 +39,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
         mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
+        mCalendarDayTasks.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
@@ -52,13 +53,7 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
 
-        /*
-        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-            }
-        });*/
     }
 
     @Override
