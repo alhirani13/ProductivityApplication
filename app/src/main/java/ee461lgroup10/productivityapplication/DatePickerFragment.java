@@ -32,7 +32,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int day) {
         month += 1;
         s =  month + "/" + day + "/" + year;
-        ((TaskListActivity)getActivity()).setM_Date(s);
+        ((CreateTaskActivity)getActivity()).setM_Date(s);
         // Do something with the date chosen by the user
     }
 }
