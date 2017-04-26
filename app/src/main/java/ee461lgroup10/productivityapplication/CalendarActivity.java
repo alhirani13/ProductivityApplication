@@ -16,13 +16,17 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.util.Log;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
     CalendarView mCalendarView;
     ListView mCalendarDayTasks;
+    ArrayAdapter<String> adapter;
     private DBHandler db;
 
     @Override
@@ -31,17 +35,30 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         db = new DBHandler(this);
 
-        String[] names = new String[db.getAllTasks().size()];
-        for(int i = 0; i < db.getAllTasks().size(); i++)
-        {
-            names[i] = db.getAllTasks().get(i).getName();
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
         mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
-
+        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
+
+        //long g = mCalendarView.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String comparison = sdf.format(new Date(mCalendarView.getDate()));
+        Task[] names1 = new Task[db.getAllTasks().size()];
+        for(int i = 0; i < db.getAllTasks().size(); i++)
+        {
+            names1[i] = db.getAllTasks().get(i);
+        }
+        List<String> a1 = new ArrayList<String>();
+        for(int i = 0; i < names1.length; i++)
+        {
+            if(sdf.format(names1[i].getDate()).equals(comparison))
+                a1.add(names1[i].getName());
+        }
+        adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, a1);
+        mCalendarDayTasks.setAdapter(adapter);
+
+
+
 
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -51,14 +68,25 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-
-        /*
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                Task[] names = new Task[db.getAllTasks().size()];
+                String comparison = (month+1) + "/" + dayOfMonth + "/" + year;
+                for(int i = 0; i < db.getAllTasks().size(); i++)
+                {
+                    names[i] = db.getAllTasks().get(i);
+                }
+                List<String> a = new ArrayList<String>();
+                for(int i = 0; i < names.length; i++)
+                {
+                    if(names[i].getDate().equals(comparison))
+                        a.add(names[i].getName());
+                }
+                adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, a);
+                mCalendarDayTasks.setAdapter(adapter);
             }
-        });*/
+        });
     }
 
     @Override
