@@ -1,28 +1,48 @@
 package ee461lgroup10.productivityapplication;
 
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.net.ParseException;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.util.Log;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
+    CalendarView mCalendarView;
     ListView mCalendarDayTasks;
-
-    //TODO: remove/refactor this, this is to make sure layout works (need to replace with SQL data)
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        db = new DBHandler(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mCalendarDayTasks = (ListView)findViewById(R.id.calendarTaskList);
+        String[] names = new String[db.getAllTasks().size()];
+        for(int i = 0; i < db.getAllTasks().size(); i++)
+        {
+            names[i] = db.getAllTasks().get(i).getName();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
+        mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
         mCalendarDayTasks.setAdapter(adapter);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
+        setSupportActionBar(toolbar);
 
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -32,6 +52,28 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.addTask) {
+            Intent createTaskIntent = new Intent(CalendarActivity.this, CreateTaskActivity.class);
+            startActivity(createTaskIntent);
+        }
+        else if(id == R.id.goToMap)
+        {
+            Intent webIntent = new Intent(CalendarActivity.this, WebActivity.class);
+            startActivity(webIntent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
