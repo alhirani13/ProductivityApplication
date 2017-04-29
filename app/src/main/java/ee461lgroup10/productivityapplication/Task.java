@@ -3,6 +3,8 @@ package ee461lgroup10.productivityapplication;
 /**
  * Created by dylan_000 on 3/29/2017.
  */
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 

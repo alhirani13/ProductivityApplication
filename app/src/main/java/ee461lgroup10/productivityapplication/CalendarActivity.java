@@ -29,7 +29,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        db = new DBHandler(this);
+        db = new DBHandler.getInstance(this);
 
         String[] names = new String[db.getAllTasks().size()];
         for(int i = 0; i < db.getAllTasks().size(); i++)

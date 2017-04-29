@@ -53,7 +53,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        db = new DBHandler(this);
+        db = new DBHandler.getInstance(this);
 
         Button confirm =(Button)findViewById(R.id.ConfirmButton);
         confirm.setOnClickListener(new View.OnClickListener() {
