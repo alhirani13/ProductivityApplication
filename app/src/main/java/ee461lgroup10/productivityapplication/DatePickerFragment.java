@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -31,7 +32,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         month += 1;
-        s =  month + "/" + day + "/" + year;
+        if(month < 10)
+        {
+            s = "0" + month + "/" + day + "/" + year;
+        }
+        else
+        {
+            s =  month + "/" + day + "/" + year;
+        }
         ((CreateTaskActivity)getActivity()).setM_Date(s);
         // Do something with the date chosen by the user
     }

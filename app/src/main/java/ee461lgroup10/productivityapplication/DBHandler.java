@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by dylan_000 on 3/29/2017.
- */
 
 public class DBHandler extends SQLiteOpenHelper{
 
@@ -24,7 +21,7 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
     //Database Name
     private static final String DATABASE_NAME = "taskInfo";
-    //Contacts table name
+    //Tasks table name
     private static final String TABLE_TASKS = "tasks";
     //Tasks Table Columns names
     private static final String KEY_ID = "id";
@@ -63,7 +60,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     //Adding new Task
     public void addTask(Task task){
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, task.getName()); //Task Name
         values.put(KEY_DATE, task.getDate()); //Task Date
@@ -73,7 +70,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     //Getting one Task, Read Record
     public Task getTask(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
         if(cursor != null)
             cursor.moveToFirst();
@@ -87,7 +84,7 @@ public class DBHandler extends SQLiteOpenHelper{
         List<Task> taskList = new ArrayList<Task>();
         //Select all query
         String selectQuery = "SELECT * FROM " + TABLE_TASKS;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         //looping through all rows and adding to list
         if(cursor.moveToFirst()){
