@@ -41,10 +41,6 @@ public class CreateTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mTasks = (ListView) findViewById(R.id.taskListView);
-        mTasks.setAdapter(adapter);*/
 
         mNameTaskButton = (Button) findViewById(R.id.TaskName);
         mTaskNameText = (TextView) findViewById(R.id.NameTaskText);
@@ -52,7 +48,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        db = new DBHandler.getInstance(this);
+        db = DBHandler.getInstance(this);
 
         Button confirm =(Button)findViewById(R.id.ConfirmButton);
         confirm.setOnClickListener(new View.OnClickListener() {

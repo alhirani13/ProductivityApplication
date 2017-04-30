@@ -2,6 +2,8 @@ package ee461lgroup10.productivityapplication;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,9 +25,18 @@ public class TaskListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
 
+
+        DBHandler handler = DBHandler.getInstance(this);
+        SQLiteDatabase db = handler.getReadableDatabase();
+        Cursor taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+        mTaskListTasks = (ListView) findViewById(R.id.taskListTasks);
+        TaskCursorAdapter taskAdapter = new TaskCursorAdapter(this, taskCursor);
+        mTaskListTasks.setAdapter(taskAdapter);
+
+        /*
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
         mTaskListTasks = (ListView)findViewById(R.id.taskListTasks);
-        mTaskListTasks.setAdapter(adapter);
+        mTaskListTasks.setAdapter(adapter);*/
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
