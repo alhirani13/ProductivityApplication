@@ -33,6 +33,7 @@ public class CalendarActivity extends AppCompatActivity {
     SQLiteDatabase db;
     SimpleDateFormat sdf;
     String currentDate;
+    TaskCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,14 @@ public class CalendarActivity extends AppCompatActivity {
         mCalendarView = (CalendarView)findViewById(R.id.calendarView);
         sdf = new SimpleDateFormat("MM/dd/yyyy");
         currentDate = sdf.format(new Date(mCalendarView.getDate()));
-        //task = db.rawQuery("SELECT id AS _id, * FROM tasks WHERE date = " + currentDate, null);
-        task = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+        //TODO: PLEASE FIX THIS
+        //TODO: LOOK THIS UP
+        task = db.rawQuery("SELECT id AS _id, * FROM tasks WHERE date =?", new String[] {currentDate});
+        //task = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+
 
         mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
-        TaskCursorAdapter adapter = new TaskCursorAdapter(this, task);
+        adapter = new TaskCursorAdapter(this, task);
         mCalendarDayTasks.setAdapter(adapter);
 
 
@@ -65,6 +69,16 @@ public class CalendarActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CalendarActivity.this, TaskListActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                currentDate = sdf.format(new Date(mCalendarView.getDate()));
+                task = db.rawQuery("SELECT id AS _id, * FROM tasks WHERE date =?", new String[] {currentDate});
+                adapter.changeCursor(task);
+                adapter.notifyDataSetChanged();
             }
         });
 
