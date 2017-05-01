@@ -34,10 +34,18 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if(month < 10)
         {
             s = "0" + month + "/" + day + "/" + year;
+            if(day < 10)
+            {
+                s = "0" + month + "/0" + day + "/" + year;
+            }
         }
         else
         {
             s =  month + "/" + day + "/" + year;
+            if(day < 10)
+            {
+                s = month + "/0" + day + "/" + year;
+            }
         }
         ((CreateTaskActivity)getActivity()).setM_Date(s);
         // Do something with the date chosen by the user
