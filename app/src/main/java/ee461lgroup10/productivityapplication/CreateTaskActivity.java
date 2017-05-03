@@ -5,23 +5,14 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
-import java.util.List;
 
 public class CreateTaskActivity extends AppCompatActivity {
 
@@ -31,7 +22,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     public String m_Date = "";
     private DialogFragment newFragment;
     private DBHandler db;
-    private int id = 1;
     private TextView mTaskNameText;
     private TextView mSetDateText;
 
@@ -41,18 +31,13 @@ public class CreateTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mTasks = (ListView) findViewById(R.id.taskListView);
-        mTasks.setAdapter(adapter);*/
-
         mNameTaskButton = (Button) findViewById(R.id.TaskName);
         mTaskNameText = (TextView) findViewById(R.id.NameTaskText);
         mSetDateText = (TextView) findViewById(R.id.SetDateText);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        db = new DBHandler(this);
+        db = DBHandler.getInstance(this);
 
         Button confirm =(Button)findViewById(R.id.ConfirmButton);
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +59,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
     public void makeEntry() {
-        db.addTask(new Task(id, m_Text, m_Date));
-        id++;
+        db.addTask(new Task(m_Text, m_Date));
     }
 
     public void showAlertDialog(View v) {

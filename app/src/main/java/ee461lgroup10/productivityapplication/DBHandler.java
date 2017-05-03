@@ -6,35 +6,44 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- * Created by dylan_000 on 3/29/2017.
- */
 
 public class DBHandler extends SQLiteOpenHelper{
+
+    private static DBHandler mInstance;
 
     //Database Version
     private static final int DATABASE_VERSION = 1;
     //Database Name
     private static final String DATABASE_NAME = "taskInfo";
-    //Contacts table name
+    //Tasks table name
     private static final String TABLE_TASKS = "tasks";
     //Tasks Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_DATE = "date";
 
-    public DBHandler(Context context){
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+    public static synchronized DBHandler getInstance(Context context) {
+        if (mInstance == null)
+        {
+            mInstance = new DBHandler(context.getApplicationContext());
+        }
+        return mInstance;
     }
 
+    private DBHandler(Context context){
+        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+    }
     @Override
     public void onCreate(SQLiteDatabase db){
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_DATE + " TEXT" + ")";
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_TASKS +
+                "(" +
+                    KEY_ID + " INTEGER PRIMARY KEY," +
+                    KEY_NAME + " TEXT," +
+                    KEY_DATE + " TEXT" +
+                ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -48,7 +57,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     //Adding new Task
     public void addTask(Task task){
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, task.getName()); //Task Name
         values.put(KEY_DATE, task.getDate()); //Task Date
@@ -58,11 +67,13 @@ public class DBHandler extends SQLiteOpenHelper{
 
     //Getting one Task, Read Record
     public Task getTask(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+        SQLiteDatabase db = getReadableDatabase();
+        id++;
+        //Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.rawQuery("SELECT id AS _id, * FROM " + TABLE_TASKS + " WHERE id =?", new String[] {String.valueOf(id)});
         if(cursor != null)
             cursor.moveToFirst();
-        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(2), cursor.getString(3));
         //return task
         return contact;
     }
@@ -72,7 +83,7 @@ public class DBHandler extends SQLiteOpenHelper{
         List<Task> taskList = new ArrayList<Task>();
         //Select all query
         String selectQuery = "SELECT * FROM " + TABLE_TASKS;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         //looping through all rows and adding to list
         if(cursor.moveToFirst()){
@@ -115,4 +126,6 @@ public class DBHandler extends SQLiteOpenHelper{
         db.delete(TABLE_TASKS, KEY_ID + " = ?", new String[] {String.valueOf(task.getId())});
         db.close();
     }
+
+
 }
