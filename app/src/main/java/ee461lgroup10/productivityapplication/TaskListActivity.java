@@ -20,6 +20,10 @@ import android.widget.ListView;
 
 public class TaskListActivity extends AppCompatActivity {
     ListView mTaskListTasks;
+    DBHandler handler;
+    TaskCursorAdapter taskAdapter;
+    Cursor taskCursor;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +33,11 @@ public class TaskListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        DBHandler handler = DBHandler.getInstance(this);
-        SQLiteDatabase db = handler.getReadableDatabase();
-        Cursor taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+        handler = DBHandler.getInstance(this);
+        db = handler.getReadableDatabase();
+        taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
         mTaskListTasks = (ListView) findViewById(R.id.taskListTasks);
-        TaskCursorAdapter taskAdapter = new TaskCursorAdapter(this, taskCursor);
+        taskAdapter = new TaskCursorAdapter(this, taskCursor);
         mTaskListTasks.setAdapter(taskAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,22 +45,7 @@ public class TaskListActivity extends AppCompatActivity {
         mTaskListTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder delete = new AlertDialog.Builder(TaskListActivity.this);
-                delete.setTitle("Did you Get'er Done?")
-                        .setPositiveButton("I Got 'er Done", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO: delete task
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO: cancelled
-                                dialog.cancel();
-                            }
-                        });
-                delete.show();
+                removeFromList(position);
             }
         });
     }
@@ -81,5 +70,31 @@ public class TaskListActivity extends AppCompatActivity {
             startActivity(webIntent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void removeFromList(int position)
+    {
+        AlertDialog.Builder delete = new AlertDialog.Builder(TaskListActivity.this);
+        final int pos = position;
+        delete.setTitle("Did you Get'er Done?")
+                .setPositiveButton("I Got 'er Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Task currTask = handler.getTask(pos);
+                        handler.deleteTask(currTask);
+
+                        db = handler.getReadableDatabase();
+                        taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+                        taskAdapter.changeCursor(taskCursor);
+                        taskAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        delete.show();
     }
 }

@@ -5,11 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -71,10 +68,12 @@ public class DBHandler extends SQLiteOpenHelper{
     //Getting one Task, Read Record
     public Task getTask(int id) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+        id++;
+        //Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID, KEY_NAME, KEY_DATE}, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.rawQuery("SELECT id AS _id, * FROM " + TABLE_TASKS + " WHERE id =?", new String[] {String.valueOf(id)});
         if(cursor != null)
             cursor.moveToFirst();
-        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(2), cursor.getString(3));
         //return task
         return contact;
     }
