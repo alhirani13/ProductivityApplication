@@ -1,17 +1,20 @@
 package ee461lgroup10.productivityapplication;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -33,12 +36,29 @@ public class TaskListActivity extends AppCompatActivity {
         TaskCursorAdapter taskAdapter = new TaskCursorAdapter(this, taskCursor);
         mTaskListTasks.setAdapter(taskAdapter);
 
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mTaskListTasks = (ListView)findViewById(R.id.taskListTasks);
-        mTaskListTasks.setAdapter(adapter);*/
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mTaskListTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder delete = new AlertDialog.Builder(TaskListActivity.this);
+                delete.setTitle("Did you Get'er Done?")
+                        .setPositiveButton("I Got 'er Done", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO: delete task
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO: cancelled
+                                dialog.cancel();
+                            }
+                        });
+                delete.show();
+            }
+        });
     }
 
     @Override
