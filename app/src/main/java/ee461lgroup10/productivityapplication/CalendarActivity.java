@@ -51,17 +51,11 @@ public class CalendarActivity extends AppCompatActivity {
         //TODO: PLEASE FIX THIS
         //TODO: LOOK THIS UP
         task = db.rawQuery("SELECT id AS _id, * FROM tasks WHERE date =?", new String[] {currentDate});
-        //task = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
 
 
         mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
         adapter = new TaskCursorAdapter(this, task);
         mCalendarDayTasks.setAdapter(adapter);
-
-
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
-        mCalendarDayTasks = (ListView) findViewById(R.id.calendarTaskList);
-        mCalendarDayTasks.setAdapter(adapter);*/
 
 
         mCalendarDayTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,7 +75,6 @@ public class CalendarActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
 
 
     }
