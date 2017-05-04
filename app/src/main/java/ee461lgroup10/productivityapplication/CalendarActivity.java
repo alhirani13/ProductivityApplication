@@ -52,7 +52,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 15);
+        calendar.set(Calendar.MINUTE, 18);
 
         Intent intent = new Intent(this, Notification_reciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
