@@ -51,8 +51,8 @@ public class CalendarActivity extends AppCompatActivity {
         mCalendarDayTasks.setAdapter(adapter);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 6);
-        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 15);
 
         Intent intent = new Intent(this, Notification_reciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
