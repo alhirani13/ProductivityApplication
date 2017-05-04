@@ -1,118 +1,100 @@
 package ee461lgroup10.productivityapplication;
 
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.InputType;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
-import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
-
-    private ListView mTasks;
-    private Button mNameTaskButton;
-    public String m_Text = "";
-    public String m_Date = "";
-    private DialogFragment newFragment;
-    private DBHandler db;
-    private int id = 1;
-    private TextView mTaskNameText;
-    private TextView mSetDateText;
+    ListView mTaskListTasks;
+    DBHandler handler;
+    TaskCursorAdapter taskAdapter;
+    Cursor taskCursor;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, Stringtasks.useless);
-        mTasks = (ListView) findViewById(R.id.taskListView);
-        mTasks.setAdapter(adapter);*/
 
-        mNameTaskButton = (Button) findViewById(R.id.TaskName);
-        mTaskNameText = (TextView) findViewById(R.id.NameTaskText);
-        mSetDateText = (TextView) findViewById(R.id.SetDateText);
+
+        handler = DBHandler.getInstance(this);
+        db = handler.getReadableDatabase();
+        taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+        mTaskListTasks = (ListView) findViewById(R.id.taskListTasks);
+        taskAdapter = new TaskCursorAdapter(this, taskCursor);
+        mTaskListTasks.setAdapter(taskAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        db = new DBHandler.getInstance(this);
-
-        Button confirm =(Button)findViewById(R.id.ConfirmButton);
-        confirm.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                makeEntry();
-                Intent intent = new Intent(TaskListActivity.this, CalendarActivity.class);
-                startActivity(intent);
+        mTaskListTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                removeFromList(position);
             }
         });
     }
 
-
-
-    public void showDatePickerDialog(View v) {
-        newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.addTask) {
+            Intent createTaskIntent = new Intent(TaskListActivity.this, CreateTaskActivity.class);
+            startActivity(createTaskIntent);
 
-
-    public void makeEntry() {
-        db.addTask(new Task(id, m_Text, m_Date));
-        id++;
+        }
+        if (id == R.id.goToMap)
+        {
+            Intent webIntent = new Intent(TaskListActivity.this, WebActivity.class);
+            startActivity(webIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    public void showAlertDialog(View v) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText edittext = new EditText(TaskListActivity.this);
-        alert.setMessage("Please Enter Task Name");
-        alert.setTitle("New Task");
+    public void removeFromList(int position)
+    {
+        AlertDialog.Builder delete = new AlertDialog.Builder(TaskListActivity.this);
+        final int pos = position;
+        delete.setTitle("Did you Get'er Done?")
+                .setPositiveButton("I Got 'er Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Task currTask = handler.getTask(pos);
+                        handler.deleteTask(currTask);
 
-        alert.setView(edittext);
-
-        alert.setPositiveButton("Get 'er Done", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //What ever you want to do with the value
-                Editable YouEditTextValue = edittext.getText();
-                m_Text = YouEditTextValue.toString();
-                mTaskNameText.setText(m_Text);
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.cancel();
-            }
-        });
-
-        alert.show();
+                        db = handler.getReadableDatabase();
+                        taskCursor = db.rawQuery("SELECT id AS _id, * FROM tasks", null);
+                        taskAdapter.changeCursor(taskCursor);
+                        taskAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        delete.show();
     }
-
-
-    public void setM_Date(String data) {
-        m_Date = data;
-        mSetDateText.setText(m_Date);
-    }
-
-
-
 }

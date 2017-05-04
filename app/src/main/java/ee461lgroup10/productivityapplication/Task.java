@@ -9,20 +9,25 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class Task {
-    private int id;
     private String name;
     private String date;
+
+
+    private int id;
 
     public Task(){}
 
     public Task(int id, String name, String date) {
+
         this.id = id;
         this.name = name;
         this.date = date;
     }
 
-    public void setId(int id){
-        this.id = id;
+    public Task(String name, String date)
+    {
+        this.name = name;
+        this.date = date;
     }
 
     public void setName(String name){
@@ -33,9 +38,6 @@ public class Task {
         this.date = date;
     }
 
-    public int getId(){
-        return id;
-    }
 
     public String getName(){
         return name;
@@ -43,5 +45,12 @@ public class Task {
 
     public String getDate(){
         return date;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
