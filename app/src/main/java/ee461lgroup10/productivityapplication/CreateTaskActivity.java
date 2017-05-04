@@ -20,10 +20,12 @@ public class CreateTaskActivity extends AppCompatActivity {
     private Button mNameTaskButton;
     public String m_Text = "";
     public String m_Date = "";
+    public String m_Location = "";
     private DialogFragment newFragment;
     private DBHandler db;
     private TextView mTaskNameText;
     private TextView mSetDateText;
+    private TextView mSetLocationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         mNameTaskButton = (Button) findViewById(R.id.TaskName);
         mTaskNameText = (TextView) findViewById(R.id.NameTaskText);
         mSetDateText = (TextView) findViewById(R.id.SetDateText);
+        mSetLocationText = (TextView) findViewById(R.id.SetLocationText);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -59,7 +62,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
     public void makeEntry() {
-        db.addTask(new Task(m_Text, m_Date));
+        db.addTask(new Task(m_Text, m_Date, m_Location));
     }
 
     public void showAlertDialog(View v) {
@@ -88,6 +91,38 @@ public class CreateTaskActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public void showAlertDialog2(View v) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(CreateTaskActivity.this);
+        alert.setMessage("Please Enter Task Location");
+        alert.setTitle("New Task Location");
+
+        alert.setView(edittext);
+
+        alert.setPositiveButton("Get 'er Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //What ever you want to do with the value
+                Editable YouEditTextValue = edittext.getText();
+                m_Location = YouEditTextValue.toString();
+                setM_Location(m_Location);
+                mSetLocationText.setText(m_Location);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+    }
+
+
+    public void setM_Location(String data) {
+        m_Location = data;
+        mSetLocationText.setText(m_Location);
+    }
 
     public void setM_Date(String data) {
         m_Date = data;

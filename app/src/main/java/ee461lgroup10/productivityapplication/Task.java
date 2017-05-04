@@ -3,31 +3,30 @@ package ee461lgroup10.productivityapplication;
 /**
  * Created by dylan_000 on 3/29/2017.
  */
-import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class Task {
     private String name;
     private String date;
-
-
+    private String location;
     private int id;
 
     public Task(){}
 
-    public Task(int id, String name, String date) {
+
+    public Task(String name, String date, String location)
+    {
+        this.name = name;
+        this.date = date;
+        this.location = location;
+    }
+
+    public Task(int id, String name, String date, String location) {
 
         this.id = id;
         this.name = name;
         this.date = date;
-    }
-
-    public Task(String name, String date)
-    {
-        this.name = name;
-        this.date = date;
+        this.location = location;
     }
 
     public void setName(String name){
@@ -52,5 +51,13 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

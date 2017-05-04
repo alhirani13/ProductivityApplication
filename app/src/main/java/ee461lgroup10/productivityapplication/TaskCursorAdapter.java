@@ -22,12 +22,12 @@ public class TaskCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView setName = (TextView) view.findViewById(R.id.itemTaskName);
-        TextView setDate = (TextView) view.findViewById(R.id.itemTaskLocation);
+        TextView setLocation = (TextView) view.findViewById(R.id.itemTaskLocation);
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-        String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+        String location = cursor.getString(cursor.getColumnIndexOrThrow("location")) + "   " + cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
         setName.setText(name);
-        setDate.setText(date);
+        setLocation.setText(location);
     }
 }

@@ -24,6 +24,7 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_DATE = "date";
+    private static final String KEY_LOCATION = "location";
 
     public static synchronized DBHandler getInstance(Context context) {
         if (mInstance == null)
@@ -40,9 +41,10 @@ public class DBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_TASKS +
                 "(" +
-                    KEY_ID + " INTEGER PRIMARY KEY," +
-                    KEY_NAME + " TEXT," +
-                    KEY_DATE + " TEXT" +
+                KEY_ID + " INTEGER PRIMARY KEY," +
+                KEY_NAME + " TEXT," +
+                KEY_DATE + " TEXT," +
+                KEY_LOCATION + " TEXT" +
                 ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -61,6 +63,7 @@ public class DBHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, task.getName()); //Task Name
         values.put(KEY_DATE, task.getDate()); //Task Date
+        values.put(KEY_LOCATION, task.getLocation()); //Task Location
         db.insert(TABLE_TASKS, null, values);
         db.close(); //Closing Database Connection
     }
@@ -73,7 +76,7 @@ public class DBHandler extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery("SELECT id AS _id, * FROM " + TABLE_TASKS + " WHERE id =?", new String[] {String.valueOf(id)});
         if(cursor != null)
             cursor.moveToFirst();
-        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(2), cursor.getString(3));
+        Task contact = new Task(Integer.parseInt(cursor.getString(0)), cursor.getString(2), cursor.getString(3), cursor.getString(4));
         //return task
         return contact;
     }
