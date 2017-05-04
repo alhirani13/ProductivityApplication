@@ -99,10 +99,8 @@ public class CalendarActivity extends AppCompatActivity {
         }
         else if(id == R.id.goToMap)
         {
-            Intent tempIntent = new Intent(CalendarActivity.this, NotificationActivity.class);
-            startActivity(tempIntent);
-            //Intent webIntent = new Intent(CalendarActivity.this, WebActivity.class);
-            //startActivity(webIntent);
+            Intent webIntent = new Intent(CalendarActivity.this, WebActivity.class);
+            startActivity(webIntent);
         }
         return super.onOptionsItemSelected(item);
     }
