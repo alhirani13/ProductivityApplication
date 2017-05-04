@@ -48,8 +48,6 @@ public class CalendarActivity extends AppCompatActivity {
         mCalendarView = (CalendarView)findViewById(R.id.calendarView);
         sdf = new SimpleDateFormat("MM/dd/yyyy");
         currentDate = sdf.format(new Date(mCalendarView.getDate()));
-        //TODO: PLEASE FIX THIS
-        //TODO: LOOK THIS UP
         task = db.rawQuery("SELECT id AS _id, * FROM tasks WHERE date =?", new String[] {currentDate});
 
 
